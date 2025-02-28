@@ -1,11 +1,10 @@
 {
   "name": "@zkp2p/zkp2p-registry",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "publish": "yarn build && yarn publish"
+    "build": "tsc"
   },
   "dependencies": {
     "ethers": "^5.7.1"
@@ -13,5 +12,8 @@
   "devDependencies": {
     "@types/node": "^22.13.5",
     "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
