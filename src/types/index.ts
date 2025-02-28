@@ -5,7 +5,7 @@ export const PaymentPlatform = {
   CASHAPP: "cashapp",
   REVOLUT: "revolut",
   WISE: "wise",
-  MERCADO_PAGO: "mercado_pago",
+  MERCADO_PAGO: "mercadopago",
 };
 
 export const paymentPlatforms = [
