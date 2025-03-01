@@ -96,7 +96,7 @@ export const revolutConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Revtag",
     payeeDetailInputHelperText: "This is your Revtag. Make sure you have set your Revtag to be publicly discoverable.",
     payeeDetailValidationFailureMessage: "Make sure you have set your Revtag to be publicly discoverable and there are no typos.",
-    payeeIdKey: 'revtag',
+    payeeIdKey: 'revolutUsername',
     getDepositData,
     validateDepositData
   },
