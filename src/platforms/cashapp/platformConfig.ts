@@ -77,6 +77,7 @@ export const cashappConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Cashtag",
     payeeDetailInputHelperText: "This is your Cashtag. Please ensure you have set your Cashtag as discoverable by others. Do not include the $ symbol.",
     payeeDetailValidationFailureMessage: "Make sure you have set your Cashtag as discoverable by others. Do not include the $ symbol.",
+    payeeIdKey: 'cashtag',
     getDepositData,
     validateDepositData
   },

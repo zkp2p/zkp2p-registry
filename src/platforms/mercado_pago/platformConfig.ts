@@ -98,6 +98,7 @@ export const mercadoPagoConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Mercado Pago CVU",
     payeeDetailInputHelperText: "This is your Mercado Pago CVU. You can find it in your Mercado Pago account.",
     payeeDetailValidationFailureMessage: "Make sure there are no typos.",
+    payeeIdKey: 'cvu',
     getDepositData,
     validateDepositData
   },

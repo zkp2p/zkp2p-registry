@@ -84,6 +84,7 @@ export const wiseConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Wisetag",
     payeeDetailInputHelperText: "This is your Wisetag. Do not include the @ symbol.",
     payeeDetailValidationFailureMessage: "Make sure there are no typos. Do not include the @ symbol.",
+    payeeIdKey: 'wisetag',
     getDepositData
   },
   sendPaymentWarning,

@@ -48,6 +48,8 @@ export interface PaymentPlatformConfig {
     payeeDetailInputPlaceholder: string;
     payeeDetailInputHelperText: string;
     payeeDetailValidationFailureMessage: string;
+    payeeIdKey: string;
+    // Returns the formatted deposit data to be sent for validation to backend
     getDepositData: (payeeDetails: string, telegramUsername?: string) => { [key: string]: string };
     // Validates the deposit data and returns the normalized payee id whose hash is stored onchain
     validateDepositData?: (depositData: { [key: string]: string }) => Promise<string>;

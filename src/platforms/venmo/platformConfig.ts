@@ -90,6 +90,7 @@ export const venmoConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Venmo username",
     payeeDetailInputHelperText: "This is your Venmo username",
     payeeDetailValidationFailureMessage: "Make sure there are no typos in your username. Do not include the @",
+    payeeIdKey: 'venmoUsername',
     getDepositData,
     validateDepositData
   },
