@@ -57,6 +57,26 @@ const parseExtractedParameters = (context: string) => {
   };
 };
 
+// Helper function to validate deposit data
+const validateDepositData = async (depositData: { [key: string]: string }) => {
+  const venmoHandle = depositData.venmoUsername;
+
+  try {
+    const response = await fetch(`https://account.venmo.com/u/${venmoHandle}`);
+    const html = await response.text();
+
+    // Extract the user ID using regex
+    const match = html.match(/"user":\{"displayName":"[^"]*","id":"(\d+)"/);
+    if (!match) {
+      throw new Error("Invalid Venmo ID");
+    }
+
+    return match[1];
+  } catch (error) {
+    throw new Error(`Failed to get Venmo ID for ${venmoHandle}`);
+  }
+}
+
 export const venmoConfig: PaymentPlatformConfig = {
   platformId: PaymentPlatform.VENMO,
   platformName: 'Venmo',
@@ -70,7 +90,8 @@ export const venmoConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Venmo username",
     payeeDetailInputHelperText: "This is your Venmo username",
     payeeDetailValidationFailureMessage: "Make sure there are no typos in your username. Do not include the @",
-    getDepositData
+    getDepositData,
+    validateDepositData
   },
   parseExtractedParameters,
   useCustomQRCode: true,

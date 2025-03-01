@@ -45,6 +45,27 @@ const parseExtractedParameters = (context: string) => {
   };
 };
 
+const validateDepositData = async (depositData: { [key: string]: string }) => {
+  const cashtag = depositData.cashtag;
+
+  try {
+    const response = await fetch(`https://cash.app/$${cashtag}`);
+    const html = await response.text();
+
+    // Extract the user ID using regex
+    // Letters and numbers only allowed in cashtag
+    const match = html.match(/<title>Pay \$([A-Za-z0-9]+) on Cash App/);
+    if (!match) {
+      throw new Error("Invalid Cashapp ID");
+    }
+
+    return match[1];
+  } catch (error) {
+    throw new Error(`Failed to get Cashapp ID for ${cashtag}`);
+  }
+}
+
+
 export const cashappConfig: PaymentPlatformConfig = {
   platformId: PaymentPlatform.CASHAPP,
   platformName: 'Cash App',
@@ -56,7 +77,8 @@ export const cashappConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Cashtag",
     payeeDetailInputHelperText: "This is your Cashtag. Please ensure you have set your Cashtag as discoverable by others. Do not include the $ symbol.",
     payeeDetailValidationFailureMessage: "Make sure you have set your Cashtag as discoverable by others. Do not include the $ symbol.",
-    getDepositData
+    getDepositData,
+    validateDepositData
   },
   parseExtractedParameters,
   minFiatAmount: '0.1',   // 1 USD

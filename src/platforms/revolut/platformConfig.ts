@@ -50,6 +50,24 @@ const parseExtractedParameters = (context: string) => {
   };
 };
 
+const validateDepositData = async (depositData: { [key: string]: string }) => {
+  const revolutHandle = depositData.revolutUsername;
+
+  try {
+    const response = await fetch(`https://revolut.me/api/web-profile/${revolutHandle}`);
+    const json = await response.json();
+
+    // Extract the user ID using regex
+    if (json.username !== revolutHandle) {
+      throw new Error("Invalid Revolut ID");
+    }
+
+    return json.username;
+  } catch (error) {
+    throw new Error(`Failed to get Revolut ID for ${revolutHandle}`);
+  }
+}
+
 export const revolutConfig: PaymentPlatformConfig = {
   platformId: PaymentPlatform.REVOLUT,
   platformName: 'Revolut',
@@ -78,7 +96,8 @@ export const revolutConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Revtag",
     payeeDetailInputHelperText: "This is your Revtag. Make sure you have set your Revtag to be publicly discoverable.",
     payeeDetailValidationFailureMessage: "Make sure you have set your Revtag to be publicly discoverable and there are no typos.",
-    getDepositData
+    getDepositData,
+    validateDepositData
   },
   sendPaymentWarning,
   parseExtractedParameters,

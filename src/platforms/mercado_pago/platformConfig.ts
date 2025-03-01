@@ -51,6 +51,42 @@ const parseExtractedParameters = (context: string) => {
   };
 };
 
+const validateDepositData = async (processorIntentData: any) => {
+  const cvu = processorIntentData.cvu as string;
+
+  // Check if CVU is exactly 22 digits
+  if (!/^\d{22}$/.test(cvu)) {
+    throw new Error("Invalid Mercado Pago CVU: must be exactly 22 digits");
+  }
+
+  // Check if it starts with Mercado Pago prefix
+  if (!cvu.startsWith("00000031")) {
+    throw new Error("Invalid Mercado Pago CVU: must start with 00000031");
+  }
+
+  // Validate second block checksum (last 14 digits)
+  const secondBlock = cvu.slice(8, 21);
+  const secondChecksum = Number.parseInt(cvu[21]);
+  if (!validateChecksum(secondBlock, secondChecksum, [3, 9, 7, 1, 3, 9, 7, 1, 3, 9, 7, 1, 3])) {
+    throw new Error("Invalid Mercado Pago CVU: second block checksum failed");
+  }
+
+  return cvu;
+}
+
+const validateChecksum = (block: string, checksum: number, weights: number[]): boolean => {
+  // Calculate weighted sum
+  const weightedSum = block
+    .split("")
+    .map((digit, index) => Number.parseInt(digit) * weights[index])
+    .reduce((sum, value) => sum + value, 0);
+
+  // Calculate expected checksum: (10 - (weightedSum mod 10)) mod 10
+  const expectedChecksum = (10 - (weightedSum % 10)) % 10;
+
+  return checksum === expectedChecksum;
+}
+
 export const mercadoPagoConfig: PaymentPlatformConfig = {
   platformId: PaymentPlatform.MERCADO_PAGO,
   platformName: 'Mercado Pago',
@@ -62,7 +98,8 @@ export const mercadoPagoConfig: PaymentPlatformConfig = {
     payeeDetailInputPlaceholder: "Enter your Mercado Pago CVU",
     payeeDetailInputHelperText: "This is your Mercado Pago CVU. You can find it in your Mercado Pago account.",
     payeeDetailValidationFailureMessage: "Make sure there are no typos.",
-    getDepositData
+    getDepositData,
+    validateDepositData
   },
   sendPaymentWarning,
   parseExtractedParameters,
